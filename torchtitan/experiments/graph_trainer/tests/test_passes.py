@@ -18,12 +18,12 @@ from torch.testing._internal.common_utils import TestCase
 from torch.utils.checkpoint import checkpoint, CheckpointPolicy
 
 from torchtitan.distributed import ParallelDims
-from torchtitan.experiments.compiler_toolkit.graph_utils import export_joint
-from torchtitan.experiments.compiler_toolkit.passes import (
+from torchtitan.experiments.graph_trainer.graph_utils import export_joint
+from torchtitan.experiments.graph_trainer.passes import (
     apply_sac_pass,
     reassign_to_pg_pass,
 )
-from torchtitan.experiments.simple_fsdp.simple_fsdp import data_parallel
+from torchtitan.experiments.graph_trainer.simple_fsdp import data_parallel
 
 
 class ToyModel(nn.Module):
@@ -110,10 +110,6 @@ class TestReassignToPgPass(FSDPTest):
                 count += 1
         return count
 
-    # ------------------------------------------------------------------
-    # Tests
-    # ------------------------------------------------------------------
-
     def test_reassign_rewrites_ag_nodes(self):
         """Apply reassign_to_pg_pass on the real backward graph and verify
         that all-gather nodes are rewritten to the target PG."""
@@ -183,7 +179,7 @@ class TestReassignToPgPass(FSDPTest):
         fsdp_pg_name = self._get_fsdp_pg_name()
 
         # Create an extra PG mirroring the FSDP topology
-        from torchtitan.experiments.compiler_toolkit.common_utils import (
+        from torchtitan.experiments.graph_trainer.common_utils import (
             create_extra_fsdp_pg,
             get_extra_fsdp_pg_name,
         )

@@ -7,15 +7,15 @@
 import gc
 from dataclasses import dataclass, field
 
-from torchtitan.experiments.compiler_toolkit.configs import CompilerToolkitCompileConfig
+from torchtitan.experiments.graph_trainer.configs import GraphTrainerCompileConfig
 from torchtitan.trainer import Trainer
 
 
-class CompilerToolkitTrainer(Trainer):
+class GraphTrainer(Trainer):
     @dataclass(kw_only=True, slots=True)
     class Config(Trainer.Config):
-        compile: CompilerToolkitCompileConfig = field(
-            default_factory=CompilerToolkitCompileConfig
+        compile: GraphTrainerCompileConfig = field(
+            default_factory=GraphTrainerCompileConfig
         )
 
     def close(self) -> None:
